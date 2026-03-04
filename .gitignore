@@ -1,0 +1,30 @@
+# R specific
+.Rhistory
+.RData
+.Rproj.user/
+.Renviron
+*.Rproj
+
+# Large data files
+*.sav       # SPSS data files
+DB/*.sav
+
+# SPSS results (track only CSV)
+outputSPSS/*.spv
+outputSPSS/*.xlsx
+outputSPSS/*.sav
+outputSPSS/*.sps
+
+# R output: remove PDFs and other analyses
+outputR/*.pdf
+
+# Garbage to deal with csv/Excel
+script/99_csvexcel.R
+arguments/matrix_codebook.xlsx
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# No track
+notrack/
