@@ -51,7 +51,7 @@ cdbk <- (function(x = codebook.csv){
   args
 })()
 
-saveRDS(cdbk, "codebook.Rds")
+saveRDS(cdbk, "arguments/codebook.Rds")
 
 # Check if all variables exist --------------------
 cdbk.vars <- lapply(cdbk, function(x){
