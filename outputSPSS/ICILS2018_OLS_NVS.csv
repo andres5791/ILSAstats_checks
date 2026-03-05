@@ -1,10 +1,10 @@
-IDCNTRY;StratVar;NVarStrat
-Denmark;JKZONES;72
-Finland;JKZONES;74
-France;JKZONES;75
-Germany;JKZONES;75
-Korea, Republic of;JKZONES;75
-Luxembourg;JKZONES;38
-Portugal;JKZONES;75
-United States;JKZONES;75
-Germany, North-Rhine Westphalia;JKZONES;55
+"";"IDCNTRY";"StratVar";"NVarStrat"
+"1";"Denmark";"JKZONES";72
+"2";"Finland";"JKZONES";74
+"3";"France";"JKZONES";75
+"4";"Germany";"JKZONES";75
+"5";"Korea, Republic of";"JKZONES";75
+"6";"Luxembourg";"JKZONES";38
+"7";"Portugal";"JKZONES";75
+"8";"United States";"JKZONES";75
+"9";"Germany, North-Rhine Westphalia";"JKZONES";55

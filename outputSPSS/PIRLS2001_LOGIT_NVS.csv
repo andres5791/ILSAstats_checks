@@ -1,38 +1,38 @@
-IDCNTRY;StratVar;NVarStrat
-Argentina;JKZONE;69
-Belize;JKZONE;59
-Bulgaria;JKZONE;75
-Colombia;JKZONE;74
-Cyprus;JKZONE;75
-Czech Republic;JKZONE;71
-France;JKZONE;73
-Germany;JKZONE;75
-Greece;JKZONE;73
-Hong Kong, SAR;JKZONE;74
-Hungary;JKZONE;75
-Iceland;JKZONE;75
-Iran, Islamic Republic of;JKZONE;75
-Israel;JKZONE;74
-Italy;JKZONE;75
-Kuwait;JKZONE;72
-Latvia;JKZONE;71
-Lithuania;JKZONE;73
-Moldova;JKZONE;75
-Morocco;JKZONE;59
-Netherlands;JKZONE;67
-New Zealand;JKZONE;75
-Norway;JKZONE;69
-Romania;JKZONE;73
-Russian Federation;JKZONE;61
-Singapore;JKZONE;75
-Slovak Republic;JKZONE;75
-Slovenia;JKZONE;75
-Sweden;JKZONE;74
-Turkey;JKZONE;75
-North Macedonia;JKZONE;73
-United States;JKZONE;52
-England;JKZONE;66
-Scotland;JKZONE;59
-Sweden (Grade 3);JKZONE;72
-Canada (Ontario);JKZONE;75
-Canada (Quebec);JKZONE;75
+"";"IDCNTRY";"StratVar";"NVarStrat"
+"1";"Argentina";"JKZONE";69
+"2";"Belize";"JKZONE";59
+"3";"Bulgaria";"JKZONE";75
+"4";"Colombia";"JKZONE";74
+"5";"Cyprus";"JKZONE";75
+"6";"Czech Republic";"JKZONE";71
+"7";"France";"JKZONE";73
+"8";"Germany";"JKZONE";75
+"9";"Greece";"JKZONE";73
+"10";"Hong Kong, SAR";"JKZONE";74
+"11";"Hungary";"JKZONE";75
+"12";"Iceland";"JKZONE";75
+"13";"Iran, Islamic Republic of";"JKZONE";75
+"14";"Israel";"JKZONE";74
+"15";"Italy";"JKZONE";75
+"16";"Kuwait";"JKZONE";72
+"17";"Latvia";"JKZONE";71
+"18";"Lithuania";"JKZONE";73
+"19";"Moldova";"JKZONE";75
+"20";"Morocco";"JKZONE";59
+"21";"Netherlands";"JKZONE";67
+"22";"New Zealand";"JKZONE";75
+"23";"Norway";"JKZONE";69
+"24";"Romania";"JKZONE";73
+"25";"Russian Federation";"JKZONE";61
+"26";"Singapore";"JKZONE";75
+"27";"Slovak Republic";"JKZONE";75
+"28";"Slovenia";"JKZONE";75
+"29";"Sweden";"JKZONE";74
+"30";"Turkey";"JKZONE";75
+"31";"North Macedonia";"JKZONE";73
+"32";"United States";"JKZONE";52
+"33";"England";"JKZONE";66
+"34";"Scotland";"JKZONE";59
+"35";"Sweden (Grade 3)";"JKZONE";72
+"36";"Canada (Ontario)";"JKZONE";75
+"37";"Canada (Quebec)";"JKZONE";75

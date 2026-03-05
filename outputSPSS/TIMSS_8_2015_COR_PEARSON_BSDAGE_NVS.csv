@@ -1,46 +1,46 @@
-IDCNTRY;StratVar;NVarStrat
-Australia;JKZONE;75
-Bahrain;JKZONE;75
-Botswana;JKZONE;75
-Canada;JKZONE;75
-Chile;JKZONE;75
-Chinese Taipei;JKZONE;75
-Georgia;JKZONE;75
-Hong Kong, SAR;JKZONE;68
-Hungary;JKZONE;74
-Iran, Islamic Republic of;JKZONE;75
-Ireland;JKZONE;75
-Israel;JKZONE;75
-Italy;JKZONE;75
-Japan;JKZONE;74
-Kazakhstan;JKZONE;75
-Jordan;JKZONE;75
-Korea, Republic of;JKZONE;75
-Kuwait;JKZONE;75
-Lebanon;JKZONE;70
-Lithuania;JKZONE;75
-Malaysia;JKZONE;75
-Malta;JKZONE;75
-Morocco;JKZONE;75
-Oman;JKZONE;75
-New Zealand;JKZONE;74
-Norway;JKZONE;73
-Qatar;JKZONE;75
-Russian Federation;JKZONE;59
-Saudi Arabia;JKZONE;72
-Singapore;JKZONE;75
-Slovenia;JKZONE;75
-South Africa;JKZONE;75
-Sweden;JKZONE;75
-Thailand;JKZONE;75
-United Arab Emirates;JKZONE;75
-Turkey;JKZONE;75
-Egypt;JKZONE;75
-United States;JKZONE;75
-England;JKZONE;73
-Norway (8);JKZONE;72
-United Arab Emirates (Dubai);JKZONE;75
-United Arab Emirates (Abu Dhabi);JKZONE;75
-Canada (Ontario);JKZONE;71
-Canada (Quebec);JKZONE;63
-Argentina, Buenos Aires;JKZONE;66
+"";"IDCNTRY";"StratVar";"NVarStrat"
+"1";"Australia";"JKZONE";75
+"2";"Bahrain";"JKZONE";75
+"3";"Botswana";"JKZONE";75
+"4";"Canada";"JKZONE";75
+"5";"Chile";"JKZONE";75
+"6";"Chinese Taipei";"JKZONE";75
+"7";"Georgia";"JKZONE";75
+"8";"Hong Kong, SAR";"JKZONE";68
+"9";"Hungary";"JKZONE";74
+"10";"Iran, Islamic Republic of";"JKZONE";75
+"11";"Ireland";"JKZONE";75
+"12";"Israel";"JKZONE";75
+"13";"Italy";"JKZONE";75
+"14";"Japan";"JKZONE";74
+"15";"Kazakhstan";"JKZONE";75
+"16";"Jordan";"JKZONE";75
+"17";"Korea, Republic of";"JKZONE";75
+"18";"Kuwait";"JKZONE";75
+"19";"Lebanon";"JKZONE";70
+"20";"Lithuania";"JKZONE";75
+"21";"Malaysia";"JKZONE";75
+"22";"Malta";"JKZONE";75
+"23";"Morocco";"JKZONE";75
+"24";"Oman";"JKZONE";75
+"25";"New Zealand";"JKZONE";74
+"26";"Norway";"JKZONE";73
+"27";"Qatar";"JKZONE";75
+"28";"Russian Federation";"JKZONE";59
+"29";"Saudi Arabia";"JKZONE";72
+"30";"Singapore";"JKZONE";75
+"31";"Slovenia";"JKZONE";75
+"32";"South Africa";"JKZONE";75
+"33";"Sweden";"JKZONE";75
+"34";"Thailand";"JKZONE";75
+"35";"United Arab Emirates";"JKZONE";75
+"36";"Turkey";"JKZONE";75
+"37";"Egypt";"JKZONE";75
+"38";"United States";"JKZONE";75
+"39";"England";"JKZONE";73
+"40";"Norway (8)";"JKZONE";72
+"41";"United Arab Emirates (Dubai)";"JKZONE";75
+"42";"United Arab Emirates (Abu Dhabi)";"JKZONE";75
+"43";"Canada (Ontario)";"JKZONE";71
+"44";"Canada (Quebec)";"JKZONE";63
+"45";"Argentina, Buenos Aires";"JKZONE";66

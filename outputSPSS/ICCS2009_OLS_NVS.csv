@@ -1,39 +1,39 @@
-IDCNTRY;StratVar;NVarStrat
-Austria;JKZONES;68
-Bulgaria;JKZONES;75
-Chile;JKZONES;75
-Chinese Taipei;JKZONES;75
-Colombia;JKZONES;75
-Cyprus;JKZONES;75
-Czech Republic;JKZONES;73
-Denmark;JKZONES;75
-Dominican Republic;JKZONES;73
-Estonia;JKZONES;71
-Finland;JKZONES;75
-Greece;JKZONES;75
-Guatemala;JKZONES;74
-Hong Kong, SAR;JKZONES;39
-Indonesia;JKZONES;71
-Ireland;JKZONES;73
-Italy;JKZONES;75
-Korea, Republic of;JKZONES;75
-Latvia;JKZONES;75
-Liechtenstein;JKZONES;75
-Lithuania;JKZONES;75
-Luxembourg;JKZONES;75
-Malta;JKZONES;75
-Mexico;JKZONES;75
-Netherlands;JKZONES;34
-New Zealand;JKZONES;75
-Norway;JKZONES;65
-Paraguay;JKZONES;75
-Poland;JKZONES;75
-Russian Federation;JKZONES;62
-Slovak Republic;JKZONES;71
-Slovenia;JKZONES;75
-Spain;JKZONES;75
-Sweden;JKZONES;75
-Switzerland;JKZONES;75
-Thailand;JKZONES;75
-England;JKZONES;62
-Belgium (Flemish);JKZONES;75
+"";"IDCNTRY";"StratVar";"NVarStrat"
+"1";"Austria";"JKZONES";68
+"2";"Bulgaria";"JKZONES";75
+"3";"Chile";"JKZONES";75
+"4";"Chinese Taipei";"JKZONES";75
+"5";"Colombia";"JKZONES";75
+"6";"Cyprus";"JKZONES";75
+"7";"Czech Republic";"JKZONES";73
+"8";"Denmark";"JKZONES";75
+"9";"Dominican Republic";"JKZONES";73
+"10";"Estonia";"JKZONES";71
+"11";"Finland";"JKZONES";75
+"12";"Greece";"JKZONES";75
+"13";"Guatemala";"JKZONES";74
+"14";"Hong Kong, SAR";"JKZONES";39
+"15";"Indonesia";"JKZONES";71
+"16";"Ireland";"JKZONES";73
+"17";"Italy";"JKZONES";75
+"18";"Korea, Republic of";"JKZONES";75
+"19";"Latvia";"JKZONES";75
+"20";"Liechtenstein";"JKZONES";75
+"21";"Lithuania";"JKZONES";75
+"22";"Luxembourg";"JKZONES";75
+"23";"Malta";"JKZONES";75
+"24";"Mexico";"JKZONES";75
+"25";"Netherlands";"JKZONES";34
+"26";"New Zealand";"JKZONES";75
+"27";"Norway";"JKZONES";65
+"28";"Paraguay";"JKZONES";75
+"29";"Poland";"JKZONES";75
+"30";"Russian Federation";"JKZONES";62
+"31";"Slovak Republic";"JKZONES";71
+"32";"Slovenia";"JKZONES";75
+"33";"Spain";"JKZONES";75
+"34";"Sweden";"JKZONES";75
+"35";"Switzerland";"JKZONES";75
+"36";"Thailand";"JKZONES";75
+"37";"England";"JKZONES";62
+"38";"Belgium (Flemish)";"JKZONES";75

@@ -1,62 +1,62 @@
-IDCNTRY;StratVar;NVarStrat
-Azerbaijan, Republic of;JKZONE;75
-Australia;JKZONE;75
-Austria;JKZONE;75
-Bahrain;JKZONE;75
-Bulgaria;JKZONE;75
-Canada;JKZONE;75
-Chile;JKZONE;75
-Chinese Taipei;JKZONE;75
-Czech Republic;JKZONE;75
-Denmark;JKZONE;75
-Finland;JKZONE;75
-France;JKZONE;75
-Georgia;JKZONE;75
-Germany;JKZONE;75
-Hong Kong, SAR;JKZONE;70
-Hungary;JKZONE;75
-Iran, Islamic Republic of;JKZONE;75
-Ireland;JKZONE;75
-Israel;JKZONE;75
-Italy;JKZONE;75
-Kazakhstan;JKZONE;75
-Kuwait;JKZONE;75
-Latvia;JKZONE;74
-Lithuania;JKZONE;75
-Macao SAR;JKZONE;75
-Malta;JKZONE;75
-Morocco;JKZONE;75
-Oman;JKZONE;75
-Netherlands;JKZONE;68
-New Zealand;JKZONE;75
-Norway;JKZONE;75
-Poland;JKZONE;75
-Portugal;JKZONE;75
-Qatar;JKZONE;75
-Russian Federation;JKZONE;75
-Saudi Arabia;JKZONE;75
-Singapore;JKZONE;75
-Slovak Republic;JKZONE;75
-Slovenia;JKZONE;75
-South Africa;JKZONE;75
-Spain;JKZONE;75
-Sweden;JKZONE;75
-Trinidad And Tobago;JKZONE;75
-United Arab Emirates;JKZONE;75
-Egypt;JKZONE;75
-Northern Ireland;JKZONE;67
-Belgium (Flemish);JKZONE;75
-Belgium (French);JKZONE;75
-Norway (4);JKZONE;75
-South Africa (Eng/Afr);JKZONE;61
-United Arab Emirates (Dubai);JKZONE;75
-United Arab Emirates (Abu Dhabi);JKZONE;72
-Canada (Ontario);JKZONE;75
-Canada (Quebec);JKZONE;65
-Argentina, Buenos Aires;JKZONE;75
-Spain (Andalucia);JKZONE;75
-Denmark (Grade 3);JKZONE;75
-Russian Federation, Moscow;JKZONE;75
-South Africa (Gauteng);JKZONE;4
-Spain, Madrid, Bilingual;JKZONE;40
-Spain, Madrid;JKZONE;75
+"";"IDCNTRY";"StratVar";"NVarStrat"
+"1";"Azerbaijan, Republic of";"JKZONE";75
+"2";"Australia";"JKZONE";75
+"3";"Austria";"JKZONE";75
+"4";"Bahrain";"JKZONE";75
+"5";"Bulgaria";"JKZONE";75
+"6";"Canada";"JKZONE";75
+"7";"Chile";"JKZONE";75
+"8";"Chinese Taipei";"JKZONE";75
+"9";"Czech Republic";"JKZONE";75
+"10";"Denmark";"JKZONE";75
+"11";"Finland";"JKZONE";75
+"12";"France";"JKZONE";75
+"13";"Georgia";"JKZONE";75
+"14";"Germany";"JKZONE";75
+"15";"Hong Kong, SAR";"JKZONE";70
+"16";"Hungary";"JKZONE";75
+"17";"Iran, Islamic Republic of";"JKZONE";75
+"18";"Ireland";"JKZONE";75
+"19";"Israel";"JKZONE";75
+"20";"Italy";"JKZONE";75
+"21";"Kazakhstan";"JKZONE";75
+"22";"Kuwait";"JKZONE";75
+"23";"Latvia";"JKZONE";74
+"24";"Lithuania";"JKZONE";75
+"25";"Macao SAR";"JKZONE";75
+"26";"Malta";"JKZONE";75
+"27";"Morocco";"JKZONE";75
+"28";"Oman";"JKZONE";75
+"29";"Netherlands";"JKZONE";68
+"30";"New Zealand";"JKZONE";75
+"31";"Norway";"JKZONE";75
+"32";"Poland";"JKZONE";75
+"33";"Portugal";"JKZONE";75
+"34";"Qatar";"JKZONE";75
+"35";"Russian Federation";"JKZONE";75
+"36";"Saudi Arabia";"JKZONE";75
+"37";"Singapore";"JKZONE";75
+"38";"Slovak Republic";"JKZONE";75
+"39";"Slovenia";"JKZONE";75
+"40";"South Africa";"JKZONE";75
+"41";"Spain";"JKZONE";75
+"42";"Sweden";"JKZONE";75
+"43";"Trinidad And Tobago";"JKZONE";75
+"44";"United Arab Emirates";"JKZONE";75
+"45";"Egypt";"JKZONE";75
+"46";"Northern Ireland";"JKZONE";67
+"47";"Belgium (Flemish)";"JKZONE";75
+"48";"Belgium (French)";"JKZONE";75
+"49";"Norway (4)";"JKZONE";75
+"50";"South Africa (Eng/Afr)";"JKZONE";61
+"51";"United Arab Emirates (Dubai)";"JKZONE";75
+"52";"United Arab Emirates (Abu Dhabi)";"JKZONE";72
+"53";"Canada (Ontario)";"JKZONE";75
+"54";"Canada (Quebec)";"JKZONE";65
+"55";"Argentina, Buenos Aires";"JKZONE";75
+"56";"Spain (Andalucia)";"JKZONE";75
+"57";"Denmark (Grade 3)";"JKZONE";75
+"58";"Russian Federation, Moscow";"JKZONE";75
+"59";"South Africa (Gauteng)";"JKZONE";4
+"60";"Spain, Madrid, Bilingual";"JKZONE";40
+"61";"Spain, Madrid";"JKZONE";75

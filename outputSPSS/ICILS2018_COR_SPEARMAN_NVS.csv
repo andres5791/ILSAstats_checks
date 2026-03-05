@@ -1,15 +1,15 @@
-IDCNTRY;StratVar;NVarStrat
-Chile;JKZONES;75
-Denmark;JKZONES;72
-Finland;JKZONES;74
-France;JKZONES;75
-Germany;JKZONES;75
-Italy;JKZONES;75
-Kazakhstan;JKZONES;75
-Korea, Republic of;JKZONES;75
-Luxembourg;JKZONES;38
-Portugal;JKZONES;75
-United States;JKZONES;75
-Uruguay;JKZONES;75
-Russian Federation (Moscow);JKZONES;75
-Germany, North-Rhine Westphalia;JKZONES;55
+"";"IDCNTRY";"StratVar";"NVarStrat"
+"1";"Chile";"JKZONES";75
+"2";"Denmark";"JKZONES";72
+"3";"Finland";"JKZONES";74
+"4";"France";"JKZONES";75
+"5";"Germany";"JKZONES";75
+"6";"Italy";"JKZONES";75
+"7";"Kazakhstan";"JKZONES";75
+"8";"Korea, Republic of";"JKZONES";75
+"9";"Luxembourg";"JKZONES";38
+"10";"Portugal";"JKZONES";75
+"11";"United States";"JKZONES";75
+"12";"Uruguay";"JKZONES";75
+"13";"Russian Federation (Moscow)";"JKZONES";75
+"14";"Germany, North-Rhine Westphalia";"JKZONES";55
