@@ -1,6 +1,6 @@
 # ILSAstats Checks
 
-This repository is not a function, but rather a collection of scripts dedicated to document "official" statistics to which [ILSAstats](https://github.com/dopatendo/ILSAstats) can compare to. In addition, it may be useful for any other person who wants to test their own functions with "official" statistics. For now, it has as reference the statistics taken from [IEA IDB Analyzer](https://www.iea.nl/data-tools/tools) (SPSS version), the tool developed by IEA to estimate statistics with its studies and some others. Within IEA studies (e.g., TIMSS, PIRLS, ICILS, ICCS), IDB Analyzer outputs are treated as the official reference for its estimates. We plan to include other tables from the official published reports over time.
+This repository is not a package, but rather a collection of scripts dedicated to document "official" statistics to which [ILSAstats](https://github.com/dopatendo/ILSAstats) can compare to. In addition, it may be useful for any other person who wants to test their own functions with "official" statistics. For now, it has as reference the statistics taken from [IEA IDB Analyzer](https://www.iea.nl/data-tools/tools) (SPSS version), the tool developed by IEA to estimate statistics with its studies and some others. Within IEA studies (e.g., TIMSS, PIRLS, ICILS, ICCS), IDB Analyzer outputs are treated as the official reference for its estimates. We plan to include other tables from the official published reports over time.
 
 ## Studies used
 
