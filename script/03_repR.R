@@ -1,6 +1,5 @@
 if (!"pacman" %in% rownames(installed.packages())) install.packages("pacman")
-pacman::p_load(openxlsx,
-               tidyverse,
+pacman::p_load(tidyverse,
                sjlabelled,
                tictoc)
 rm(list=ls())
@@ -10,7 +9,7 @@ library(ILSAstats)
 # Paths, codebook, and basic function ------------
 datadir <- "DB"
 outputdir <- "outputR"
-cdbk <- readRDS("codebook.Rds")
+cdbk <- readRDS("arguments/codebook.Rds")
 
 # Country to string
 cnt.tostring <- function(x){
@@ -36,7 +35,7 @@ times <- bind_rows(cdbk_2) %>%
 
 # Load data and prepare ----------------
 tic("Total time")
-for(i in 1:length(cdbk)){
+for(i in 56:length(cdbk)){
   tic()
   params <- cdbk[[i]]
   
@@ -119,9 +118,9 @@ for(i in 1:length(cdbk)){
     res <- repprop(paste0("PVd", 1:5),
                    setup = rsetup)
     
-    results[[i]] <- repprop.table(res, type = "long") %>%
-      select(group, prop, se, category) %>% 
-      rename(pct = prop, pct_se = se, cutvar = category) %>%
+    results[[i]] <- repprop.table(res, type = "long") |>
+      select(group, prop, se, category) |> 
+      rename(pct = prop, pct_se = se, cutvar = category) |>
       mutate(study = params$STUDY,
              year = params$YEAR,
              population = params$POPULATION,
@@ -412,7 +411,6 @@ for(i in 1:length(cdbk)){
     if(length(groupvar) == 1){
       ress <- repquant(x = paste0(rootpv, 1:5, tailpv),
                        qtl = c(.1, .5, .9),
-                       PV = TRUE,
                        setup = rsetup) %>%
         rename(dvar = variable) %>%
         mutate(byvar = NA_character_,
@@ -427,7 +425,6 @@ for(i in 1:length(cdbk)){
       
       res <- repquant(x = paste0(rootpv, 1:5, tailpv),
                       qtl = c(.1, .5, .9),
-                      PV = TRUE,
                       setup = rsetup,
                       by = groupvar[2])  
       
@@ -527,7 +524,7 @@ for(i in 1:length(cdbk)){
     reg.formula <- as.formula(reg.formula)
    
    # Run regression
-    res <- replm2(formula = reg.formula,
+    res <- replm(formula = reg.formula,
           setup = rsetup,
           pvs = c(pv_dep, pv_ind),
           summarize = TRUE,
@@ -588,7 +585,8 @@ for(i in 1:length(cdbk)){
              year = params$YEAR,
              population = params$POPULATION,
              statistic = params$STATISTIC,
-             .before =1 )
+             .before =1 ) %>%
+      as.data.frame()
   }
   
   # Logistic regression -------------

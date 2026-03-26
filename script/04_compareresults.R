@@ -2,9 +2,9 @@ rm(list=ls())
 library(dplyr)
 library(stringr)
 
-resSPSS <- readRDS("results_spss.Rds")
+resSPSS <- readRDS("outputR/results_spss.Rds")
 resR <- readRDS("outputR/resultsR.Rds")
-cdbk <- readRDS("codebook.Rds")
+cdbk <- readRDS("arguments/codebook.Rds")
 
 # Start of loop -----------
 res_comp <- lapply(1:length(resR), function(i){  #length(resR), function(i){

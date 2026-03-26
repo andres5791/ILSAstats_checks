@@ -4,7 +4,7 @@ library(stringr)
 
 
 timesR <- readRDS("outputR/timesR.Rds")
-timesSPSS <- readRDS("timesSPSS.Rds") %>% filter(analysis != "t0")
+timesSPSS <- readRDS("outputR/timesSPSS.Rds") %>% filter(analysis != "t0")
 
 
 # Adapt SPSS times to merge -----------
@@ -93,7 +93,7 @@ times_comparison <- full_join(tmp.R, tmp.SPSS,
 
 # Calculate number of countries, schools and students for plots ---------
 
-cdbk <- readRDS("codebook.Rds")
+cdbk <- readRDS("arguments/codebook.Rds")
 cdbk_2 <- bind_rows(cdbk) %>% 
   group_by(STUDY, YEAR, POPULATION) %>%
   slice(1) %>%
@@ -125,8 +125,8 @@ datstats <- lapply(1:nrow(cdbk_2), function(i){
       N_SCHOOLS = n_distinct(IDCNTRY, IDSCHOOL),
       N_STUDENTS = n(),
       N_RWGT = rwgt,
-      N_REPS_NOPV = N_CNTRY * N_RWGT + 1,
-      N_REPS_PV = N_CNTRY * N_RWGT * 5 + 5
+      N_REPS_NOPV = N_CNTRY * (N_RWGT + 1),
+      N_REPS_PV = N_CNTRY * (N_RWGT * 5 + 5)
     )
 }) %>% bind_rows()
 
@@ -155,99 +155,11 @@ saveRDS(times_comparison, "outputR/times_comparison.Rds")
 # Plot ------------
 library(ggplot2)
 library(ggrepel)
-# 
-# times_long <- times_comparison %>%
-#   pivot_longer(
-#     cols = c(TIME_R, TIME_SPSS),
-#     names_to = "SOFTWARE",
-#     values_to = "TIME"
-#   ) %>%
-#   mutate(
-#     SOFTWARE = recode(SOFTWARE,
-#                       TIME_R = "R",
-#                       TIME_SPSS = "SPSS")
-#   )
-# 
-# 
-# 
-# times_long$STUDY_YEAR_POP = ifelse(!times_long$STUDY %in% "TIMSS",
-#                                    paste0(times_long$STUDY,"-", times_long$YEAR),
-#                                    paste0(times_long$STUDY,times_long$POPULATION,"-", times_long$YEAR))
-# 
-# tmp.analyses.noPV <- c("COR_PEARSON_NOPV", "COR_SPEARMAN", "GROUP_DIF_NOPV")
-# 
-# ggplot(times_long %>% filter(ANALYSIS %in%  tmp.analyses.noPV), aes(
-#   x = N_REPS,
-#   y = TIME,
-#   color = SOFTWARE
-# )) + 
-#   facet_wrap(~ANALYSIS) +
-#   geom_point() +
-#   geom_text_repel(
-#     aes(label = STUDY_YEAR_POP),
-#     size = 3,
-#     show.legend = FALSE) +
-#   # geom_smooth(
-#   #   method = "lm",
-#   #   se = FALSE
-#   # ) +
-#   scale_y_continuous(limits=c(-500, 2500)) +
-#   labs(
-#     x = "Number of replications x Country",
-#     y = "Time (in seconds)",
-#     title = "Processing time ILSAStats (R) vs IDB-Analyzer (SPSS)",
-#     subtitle = "Statistic without PV scales"
-#   ) +
-#   scale_color_manual(
-#     values = c(
-#       "R" = "#d91a15",
-#       "SPSS" = "#0071b9"
-#     )
-#   ) +
-#   theme_bw()
-# ggsave("outputR/time_nopv.pdf", dpi = 300, width = 16, height = 10, units = "cm",
-#        scale = 1.5)
-# 
-# 
-# 
-# ggplot(times_long %>% filter(!ANALYSIS %in%  c(tmp.analyses.noPV, "LOGIT")), aes(
-#   x = N_REPS,
-#   y = TIME,
-#   color = SOFTWARE
-# )) + 
-#   facet_wrap(~ANALYSIS) +
-#   geom_point() +
-#   geom_text_repel(
-#     aes(label = STUDY_YEAR_POP),
-#     size = 3,
-#     show.legend = FALSE) +
-#   # geom_smooth(
-#   #   method = "lm",
-#   #   se = FALSE
-#   # ) +
-#   scale_y_continuous(limits=c(-1000, 10000)) +
-#   labs(
-#     x = "Number of replications x Country",
-#     y = "Time (in seconds)",
-#     title = "Processing time ILSAStats (R) vs IDB-Analyzer (SPSS)",
-#     subtitle = "Statistic with PV scales"
-#   ) +
-#   scale_color_manual(
-#     values = c(
-#       "R" = "#d91a15",
-#       "SPSS" = "#0071b9"
-#     )
-#   ) +
-#   theme_bw()
-# ggsave("outputR/time_pv.pdf", dpi = 300, width = 16, height = 10, units = "cm",
-#        scale = 1.5)
-# 
 
-# Option 2
 # Get the ordered combinations
 ordered_levels <- times_comparison %>%
   filter(ANALYSIS == "OLS") %>%
-  arrange(desc(TIME_R)) %>%
+  arrange(desc(N_REPS), desc(TIME_R)) %>%
   transmute(id = ifelse(STUDY %in% "TIMSS",
                         paste0(STUDY,"-",POPULATION, " ", YEAR),
                         paste0(STUDY," ", YEAR))) %>%  pull(id)
@@ -271,37 +183,48 @@ times_long <- times_comparison2 %>%
                       TIME_SPSS = "SPSS")
   )
 
-ggplot(times_long %>% filter(!ANALYSIS %in% c("OLS", "LOGIT")), 
-       aes(x = forcats::fct_rev(id_factor), y = TIME, color = Software)) +
-  geom_point(size = 3) +
+ggplot(times_long %>% filter(!ANALYSIS %in% c("LOGIT")), 
+       aes(x = forcats::fct_rev(id_factor), 
+           y = TIME, 
+           color = Software,
+           shape = Software)) +
+  geom_point(size = 3, stroke = 1.2) +
   geom_line(aes(group = id_factor), color = "grey50") +
   theme_minimal() +
-  facet_wrap(~ANALYSIS, nrow = 2 ) +
-  scale_y_continuous(limits = c(-500, 7000)) +
+  facet_wrap(~ANALYSIS, nrow = 2, scales = "free_y" ) +
+  # scale_y_continuous(limits = c(-500, 13000)) +
   scale_color_manual(
     values = c(
       "R" = "#d91a15",
       "SPSS" = "#0071b9"
     )
   ) +
-  # labels above SPSS points
-  geom_text(
-    data = times_long %>% 
-      filter(!ANALYSIS %in% c("OLS", "LOGIT"), Software == "SPSS"),
-    aes(label = round(TIME, 0)),
-    vjust = -0.8,
-    size = 3,
-    show.legend = FALSE
+  scale_shape_manual(
+    values = c(
+      "R" = 1,
+      "SPSS" = 16
+    )
   ) +
-  # labels below R points
-  geom_text(
-    data = times_long %>% 
-      filter(!ANALYSIS %in% c("OLS", "LOGIT"), Software == "R"),
-    aes(label = round(TIME, 1)),
-    vjust = 1.6,
-    size = 3,
-    show.legend = FALSE
-  ) +
+  # # labels above SPSS points
+  # geom_text(
+  #   data = times_long %>% 
+  #     filter(!ANALYSIS %in% c("LOGIT"), Software == "SPSS"),
+  #   aes(label = round(TIME, 1)),
+  #   vjust = -0.8,
+  #   hjust = -.8,
+  #   size = 3,
+  #   show.legend = FALSE
+  # ) +
+  # # labels below R points
+  # geom_text(
+  #   data = times_long %>% 
+  #     filter(!ANALYSIS %in% c("LOGIT"), Software == "R"),
+  #   aes(label = round(TIME, 1)),
+  #   vjust = 1.6,
+  #   hjust = .8,
+  #   size = 3,
+  #   show.legend = FALSE
+  # ) +
   theme_bw() +
   theme(
     axis.text.x = element_text(angle = 45, hjust = 1)  
@@ -316,38 +239,38 @@ ggplot(times_long %>% filter(!ANALYSIS %in% c("OLS", "LOGIT")),
     COR_SPEARMAN = Spearman correlation between two background questionnaire scales.
     GROUP_DIF_NOPV = Mean difference between groups of continuous variable without plausible values
     GROUP_DIF_PV = Mean difference between groups of scale with plausible values.
+    OLS = Linear regression.
     PERCENTILES = Calculation of three percentiles.")
-ggsave("outputR/time_nomodel.pdf", width = 16, height = 12, unit = "cm", scale = 2)
+ggsave("outputR/time_seconds.pdf", width = 16, height = 10, unit = "cm", scale = 2)
+ggsave("outputR/time_seconds.png", width = 16, height = 10, unit = "cm", scale = 2, dpi = 600)
 
 
-ggplot(times_long %>% filter(ANALYSIS %in% c("OLS")), 
-       aes(x = forcats::fct_rev(id_factor), y = TIME, color = Software)) +
-  geom_point(size = 3) +
-  geom_line(aes(group = id_factor), color = "grey50") +
-  theme_minimal() +
-  scale_y_continuous(limits = c(-500, 10000)) +
-  scale_color_manual(
-    values = c(
-      "R" = "#d91a15",
-      "SPSS" = "#0071b9"
-    )
-  ) +
-  # labels above SPSS points
+# In ratio ------
+times_ratio <- times_comparison2 |>
+  mutate(time_ratio = TIME_SPSS / TIME_R) |>
+  group_by(ANALYSIS) |>
+  mutate(    ymax = max(time_ratio, na.rm = TRUE),
+             label_pos = ifelse(time_ratio > 0.8 * ymax, "below", "above"))
+
+         
+
+ggplot(times_ratio %>% filter(!ANALYSIS %in% c("LOGIT")), 
+       aes(x = forcats::fct_rev(id_factor), 
+           y = time_ratio)) +
+  geom_point(size = 3, stroke = 1.2, color = "#0071b9") +
+  geom_segment(aes(xend = forcats::fct_rev(id_factor), 
+                   y = 1, 
+                   yend = time_ratio),
+               color = "grey60") +
+  geom_hline(yintercept = 1, 
+             linetype = "dashed", 
+             color = "#d91a15") +
+  facet_wrap(~ANALYSIS, nrow = 2, scales = "free_y" ) +
   geom_text(
-    data = times_long %>% 
-      filter(ANALYSIS %in% c("OLS"), Software == "SPSS"),
-    aes(label = round(TIME, 0)),
-    vjust = -0.8,
+    aes(label = round(time_ratio, 1),
+        vjust = ifelse(label_pos == "above", -1.6, 1.6)),
     size = 3,
-    show.legend = FALSE
-  ) +
-  # labels below R points
-  geom_text(
-    data = times_long %>% 
-      filter(ANALYSIS %in% c("OLS"), Software == "R"),
-    aes(label = round(TIME, 1)),
-    vjust = 1.6,
-    size = 3,
+    color = "#0071b9",
     show.legend = FALSE
   ) +
   theme_bw() +
@@ -355,7 +278,16 @@ ggplot(times_long %>% filter(ANALYSIS %in% c("OLS")),
     axis.text.x = element_text(angle = 45, hjust = 1)  
   ) +
   labs(
-    x = "Study", y = "Time (in seconds)",
+    x = "Study", y = "Ratio of time (Time SPSS / Time in R)",
     title = "Processing time ILSAStats (R) vs IDB-Analyzer (SPSS)",
-    subtitle = "Regression analysis (PV scale as dependent variable)")
-ggsave("outputR/time_OLS.pdf", width = 16, height = 9, unit = "cm", scale = 2)
+    caption = "BENCHMARK = Proportion of each proficiency level.
+    COR_PEARSON_1PV = Correlation between one achievement scale and background questionnaire scale.
+    COR_PEARSON_2PV = Correlation between two achievement scales.
+    COR_PEARSON_NOPV = Correlation between two background questionnaire scales.
+    COR_SPEARMAN = Spearman correlation between two background questionnaire scales.
+    GROUP_DIF_NOPV = Mean difference between groups of continuous variable without plausible values
+    GROUP_DIF_PV = Mean difference between groups of scale with plausible values.
+    OLS = Linear regression.
+    PERCENTILES = Calculation of three percentiles.")
+ggsave("outputR/time_ratio.pdf", width = 16, height = 10, unit = "cm", scale = 2)
+ggsave("outputR/time_ratio.png", width = 16, height = 10, unit = "cm", scale = 2, dpi = 600)

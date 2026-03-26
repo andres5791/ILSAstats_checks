@@ -3,8 +3,8 @@ pacman::p_load(dplyr)
 rm(list=ls())
 
 # Load arguments ------------
-cdbk <- readRDS("codebook.Rds")
-outputdir <- "output"
+cdbk <- readRDS("arguments/codebook.Rds")
+outputdir <- "outputSPSS"
 
 
 # Import results -----------------------------------
@@ -216,7 +216,7 @@ res_transformed <- lapply(res, function(x){
 })
 
 saveRDS(res_transformed,
-        "results_spss.Rds")
+        "outputR/results_spss.Rds")
 saveRDS(res_transformed,
         file.path(
           r"(D:\RandA Dropbox\Projects\Research Projects\46_ILSAreport\02_ILSAstats\02_Checks)",
