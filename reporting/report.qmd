@@ -1,0 +1,119 @@
+---
+title: "ILSAstats comparison with IDB SPSS report"
+author: "Andrés Strello"
+date: today
+format: 
+  html:
+    toc: true
+  docx:
+    toc: true
+echo: false
+---
+
+In this document, we make a comparison between the results estimated by [ILSAstats](https://github.com/dopatendo/ILSAstats) to the estimates made by the [IEA IDB Analyzer](https://www.iea.nl/data-tools/tools) (SPSS version). IDB is the tool developed by IEA to estimate statistics with its studies and some others. Within IEA studies (e.g., TIMSS, PIRLS, ICILS, ICCS), IDB Analyzer outputs are treated as the official reference for its estimates. 
+
+# Availability of the analyses
+
+All the reported analyses and the scripts to produce them are openly available at [GitHub.com/andres5791/ILSAstats_checks](https://github.com/andres5791/ILSAstats_checks). This repository is open to the public and freely available for future reference.
+
+# Methodological details
+
+## Studies used
+
+The comparison analyses were done on the following studies
+
+-   PIRLS 2001
+-   PIRLS 2016
+-   TIMSS 2003
+-   TIMSS 2015
+-   TIMSS 2023
+-   ICILS 2018
+-   ICCS 2009
+
+Each of these studies have different particularities related to the calculation of imputation and sampling variance (i.e., standard error). These particularities are summarized in this table:
+
+| Study | Year | nrwgt | jk2type | shrtcut |
+|-------|------|-------|---------|---------|
+| ICCS  | 2009 | 75    | HALF    | N       |
+| ICILS | 2018 | 75    | HALF    | N       |
+| PIRLS | 2001 | 75    | HALF    | Y       |
+| PIRLS | 2016 | 150   | FULL    | N       |
+| TIMSS | 2003 | 75    | HALF    | Y       |
+| TIMSS | 2015 | 150   | FULL    | N       |
+| TIMSS | 2023 | 250   | FULL    | N       |
+
+The column names correspond to the arguments used by IDB Analyzer.
+
+- `nrwgt`: The number of replicate weights (i.e., the number of replications) used per study. ICILS, ICCS, and until 2015, PIRLS and TIMSS, used 75 replicate weights, i.e., one replication per each jackknife zone. From 2015, in PIRLS and TIMSS, used 150 replicate weights, i.e., two replications per each jackknife zone. Since 2021, PIRLS and TIMSS increased to 125 jackknife zones, meaning that they count with 250 replicate weights.
+- `jk2type`: one replicate per jackknife zone (`HALF`) or two replicates per jackknife zone (`FULL`). See TIMSS 2023 and ICILS 2023 Technical Reports to see the formula for each one.
+- `shrtcut`: until TIMSS/PIRLS 2011, the sampling variance (i.e., the jackknife replications) were calculated only for the first plausible value. Currently, the sampling variance is calculated for all plausible values and averaged. In other words, if we have a study with `nrwgt` of 75 and 5 plausible values, with the shortcut it would consist in (75) \* 1 + 5 = 80 replications, while without the shortcut it consists in (75) \* 5 + 5 = 380 replications.
+
+Finally, please note that currently IDB Analyzer by default calculates every TIMSS and PIRLS statistic, including older cycles, with the current formula, i.e., 250 replicate weights. For the purpose of these checks, we opted to calculate using the original formulas for older studies.
+
+## Analysis
+
+The analyses performed are described in the analysis codebook. These can be observed in detail within the GitHub repository > `arguments` > `matrix_codebook.csv`[(link)](https://github.com/andres5791/ILSAstats_checks/blob/main/arguments/matrix_codebook.csv).
+
+The column `STATISTIC` details the type of analysis to be estimated with both IDB and `ILSAstats`. These analyses consider the following:
+
+- `BENCHMARK`: estimates the performance benchmarks part of all IEA studies. The thresholds follow the default IDB suggestion, within the column `bnchmrk`.
+- `COR_PEARSON`: Pearson correlation between two continuous variables. Within these, two variation exist: those correlating two achievement scores with plausible values (e.g., `ASMMAT0_` with `ASSSCI0_` in TIMSS grade 4), or correlating a achievement score with a normal background variable (such as age).
+- `COR_PEARSON_NOPV`: Pearson correlation between two continuous variables, where no variable corresponds to an achievement score.
+- `COR_SPEARMAN`: Spearman correlation between two continuous variables, where no variable corresponds to an achievement score.
+- `GROUP_DIF_NOPV`: mean difference between groups within a country (what within IEA methodological framework is called two "dependent" subsamples), of a variable that is not an achievement score.
+- `GROUP_DIF_PV`: mean difference between groups within a country (what within IEA methodological framework is called two "dependent" subsamples), of an achievement score (with plausible values).
+- `PERCENTILES`: calculation of the percentiles 10, 50 (median) and 90 of an achievement score with plausible values, divided by a categorical variable (especifically, gender).
+- `OLS`: estimation of an OLS using as dependent variable an achievement score (with plausible values), using as independent variable: one or two categorical variables, where possible another achievement score with plausible values (not possible in ICCS), and a non-achievement continuous variable.
+
+While producing this report, `repglm` function (for logit models) present some computation issues and have been omitted in the meanwhile. The analysis of mean achievement (i.e., league tables) has been done in a different process.
+
+## How the comparison is done
+
+The comparison of estimates is available in both R format and `xlsx` in the folder `outputR/` (link for [R](https://github.com/andres5791/ILSAstats_checks/blob/main/outputR/res_comp_bystatistic.Rds) and [Excel](https://github.com/andres5791/ILSAstats_checks/blob/main/outputR/res_comp_bystatistic.xlsx)).
+
+The results are pooled by statistic type. Each row corresponds to one estimation with its corresponding standard error, for both R and SPSS. For example, the average achievement of boys in Germany with its corresponding SE, are all available in one row. The Excel file highlights the estimates where the differences between R and SPSS are over an absolute value of 0.0001.
+
+# Summarized results
+
+```{r}
+#| label: preamble
+#| echo: false
+#| output: false
+#| message: false
+
+library(tinytable)
+library(here, quietly = TRUE)
+
+comp <- readRDS(here("outputR/res_comp_bystatistic.Rds"))
+```
+
+
+```{r}
+#| label: n_estimates
+.n_estimates <- lapply(comp, \(i){
+  lapply(i, \(j) {
+    nrow(j)
+  })
+}) |> unlist() |> sum()
+```
+
+The analyses compare a total of `r .n_estimates*2 |> as.integer()` estimates: corresponding to `r .n_estimates` punctual estimations with their corresponding standard error.  
+
+```{r}
+#| label: tbl-summary
+#| caption: Summary of equal decimals.
+
+.ndecimals <- 4
+.nudif <- (1 / 10 ^ .ndecimals) |> formatC(format = "f", digits = 4)
+
+lapply(comp, \(i) lapply(i, \(j) {
+  # pending here to add the differences  
+  
+  if(!is.null(j)) data.frame(Study = unique(j$STUDY),
+               Year = unique(j$YEAR),
+               Population = unique(j$POPULATION),
+               Statistic = unique(j$STATISTIC)
+    )
+} )) |> bind_rows()
+
+```
