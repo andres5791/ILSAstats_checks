@@ -1,4 +1,4 @@
-rm(list=ls())
+# pak::pak(c("dplyr", "stringr", "openxlsx"), dependencies = TRUE)
 library(dplyr)
 library(stringr)
 
@@ -189,7 +189,7 @@ res_comp <- lapply(1:length(resR), function(i){  #length(resR), function(i){
         XVAR = gsub(tmp.id.change, tmp.change.to, XVAR)
       ) 
     }
-
+    
     # Fix xS: convert VARIABLE_D2 → VARIABLE2, and (CONSTANT) → (INTERCEPT)
     xS_2 <- xS %>%
       select(-c(BETA, B.T)) %>%

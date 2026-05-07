@@ -1,9 +1,9 @@
-if (!"pacman" %in% rownames(installed.packages())) install.packages("pacman")
-pacman::p_load(tidyverse,
-               sjlabelled,
-               tictoc)
-rm(list=ls())
-#remotes::install_github("dopatendo/ILSAstats", force = TRUE)
+# Packages -------
+# if(!requireNamespace("pak")) install.packages("pak")
+# pak::pak(c("tidyverse", "sjlabelled", "tictoc", "wCorr"))
+library(tidyverse); library(sjlabelled); library(tictoc)
+
+# pak::pak("dopatendo/ILSAstats", dependencies = TRUE)
 library(ILSAstats)
 
 # Paths, codebook, and basic function ------------
@@ -19,7 +19,7 @@ cnt.tostring <- function(x){
 }
 
 # Start loop to store results -----
-results <- as.list(1:length(cdbk))
+#results <- as.list(1:length(cdbk))
 
 # Start to store the times
 cdbk_2 <- lapply(cdbk, function(x){
@@ -35,21 +35,21 @@ times <- bind_rows(cdbk_2) %>%
 
 # Load data and prepare ----------------
 tic("Total time")
-for(i in 56:length(cdbk)){
+for (i in 61:62) { #     1:length(cdbk)) {
   tic()
   params <- cdbk[[i]]
   
   message(params$STUDY,"-",params$POPULATION," ",params$YEAR,
           ": ", params$STATISTIC)
   
-  if(params$STATISTIC %in% "LOGIT"){
+  if (params$STATISTIC %in% "LOGIT") {
     results[[i]] <- NA
     t <- toc()
     times[i, "time"] <- t$toc - t$tic 
     next
   }
   
-  if(params$STUDY %in% "TIMSS"){
+  if (params$STUDY %in% "TIMSS") {
     dat <- haven::read_sav(file.path(datadir, 
                                      paste0("TIMSS_",params$POPULATION,
                                             "_",params$YEAR,".sav")),
@@ -70,7 +70,7 @@ for(i in 56:length(cdbk)){
   
   # Identify the PV names
   ## rootpv and tailpv format
-  if("rootpv" %in% names(params)){
+  if ("rootpv" %in% names(params)) {
     rootpv <- strsplit(params$rootpv, " ")[[1]]
     if(is.na(params$tailpv)) tailpv <- rep("", length(rootpv)) else {
       tailpv <- strsplit(params$tailpv, " ")[[1]]
@@ -78,7 +78,7 @@ for(i in 56:length(cdbk)){
   }
   
   ## PVRoots and PVTails format
-  if("PVRoots" %in% names(params)){
+  if ("PVRoots" %in% names(params)) {
     PVRoots <- strsplit(params$PVRoots, " ")[[1]]
     if(is.na(params$PVTails)) PVTails <- rep("", length(PVRoots)) else {
       PVTails <- strsplit(params$PVTails, " ")[[1]]
@@ -97,12 +97,12 @@ for(i in 56:length(cdbk)){
                          group = "CNTRY")
   
   # Benchmark --------------
-  if(stats %in% "BENCHMARK"){
+  if (stats %in% "BENCHMARK") {
     bnchmrk <- strsplit(params$bnchmrk, " ", fixed = TRUE)[[1]]
     bnchmrk <- as.numeric(gsub(",", ".", bnchmrk)) # in case it has commas as decimal
     
     # Generate PV variable
-    for(pv in 1:5){
+    for (pv in 1:5) {
       tmp.pv <- dat[[paste0(rootpv, pv, tailpv)]] 
       
       dat[[paste0("PVd", pv)]] <- paste0("<", bnchmrk[1])
@@ -128,7 +128,7 @@ for(i in 56:length(cdbk)){
              .before = group)
   }
   
-  if(stats %in% "COR_PEARSON"){
+  if (stats %in% "COR_PEARSON") {
     # Pearson correlation - PV and normal variable ---------
     if(length(PVRoots) == 1) {
       
@@ -154,8 +154,8 @@ for(i in 56:length(cdbk)){
     }
     
     # Pearson correlation - PV and PV --------
-    if(length(PVRoots) == 2){
-      if(!is.na(params$xvar0)) stop("More than two variables specified")
+    if (length(PVRoots) == 2) {
+      if (!is.na(params$xvar0)) stop("More than two variables specified")
       
       res <- reprho(
         pv = paste0(PVRoots[1], 1:5, PVTails[1]),
@@ -463,7 +463,10 @@ for(i in 56:length(cdbk)){
   }
 
   # OLS ------------------------
-  if(stats %in% "OLS"){
+  if (stats %in% "OLS") {
+    
+    dat <- ILSAstats:::untidy(dat)
+    
     # Continuous variables
     convars <- strsplit(params$convar, " ")[[1]]
     
@@ -489,12 +492,24 @@ for(i in 56:length(cdbk)){
       pv_ind1 <- pv_ind2 <- NULL
       pv_ind <- NULL
     }
-    
+
     # Factorize the categorical variables
     catvars <- strsplit(params$catvar, " ")[[1]]
     refs <- as.numeric(strsplit(params$refcats, " ")[[1]])
     
-    for(j in 1:length(catvars)){
+    # Transform the categorical variables 
+    # so the first value starts in 1
+    # to avoid issues comparing to IDB SPSS output
+    for (j in catvars) {
+      .tmp_min <- min(dat[[j]], na.rm = TRUE)
+      if (.tmp_min < 1) {
+        .tmp_adj <- 1 - .tmp_min
+        dat[[j]] <- dat[[j]] + .tmp_adj
+      } 
+    }
+    
+    # Pass to factors
+    for (j in 1:length(catvars)) {
       var <- catvars[j]
       
       ## Pass to factor
