@@ -8,6 +8,8 @@ format:
   docx:
     toc: true
 echo: false
+editor_options: 
+  chunk_output_type: console
 ---
 
 In this document, we make a comparison between the results estimated by [ILSAstats](https://github.com/dopatendo/ILSAstats) to the estimates made by the [IEA IDB Analyzer](https://www.iea.nl/data-tools/tools) (SPSS version). IDB is the tool developed by IEA to estimate statistics with its studies and some others. Within IEA studies (e.g., TIMSS, PIRLS, ICILS, ICCS), IDB Analyzer outputs are treated as the official reference for its estimates. 
@@ -69,9 +71,14 @@ While producing this report, `repglm` function (for logit models) present some c
 
 ## How the comparison is done
 
+```{r}
+.ndecimals <- 4
+.nudif <- (1 / 10 ^ .ndecimals) |> formatC(format = "f", digits = 4)
+```
+
 The comparison of estimates is available in both R format and `xlsx` in the folder `outputR/` (link for [R](https://github.com/andres5791/ILSAstats_checks/blob/main/outputR/res_comp_bystatistic.Rds) and [Excel](https://github.com/andres5791/ILSAstats_checks/blob/main/outputR/res_comp_bystatistic.xlsx)).
 
-The results are pooled by statistic type. Each row corresponds to one estimation with its corresponding standard error, for both R and SPSS. For example, the average achievement of boys in Germany with its corresponding SE, are all available in one row. The Excel file highlights the estimates where the differences between R and SPSS are over an absolute value of 0.0001.
+The results are pooled by statistic type. Each row corresponds to one estimation with its corresponding standard error, for both R and SPSS. For example, the average achievement of boys in Germany with its corresponding SE, are all available in one row. The Excel file highlights the estimates where the differences between R and SPSS are over an absolute value of `{r} .nudif`.
 
 # Summarized results
 
@@ -82,6 +89,7 @@ The results are pooled by statistic type. Each row corresponds to one estimation
 #| message: false
 
 library(tinytable)
+library(dplyr)
 library(here, quietly = TRUE)
 
 comp <- readRDS(here("outputR/res_comp_bystatistic.Rds"))
@@ -92,28 +100,156 @@ comp <- readRDS(here("outputR/res_comp_bystatistic.Rds"))
 #| label: n_estimates
 .n_estimates <- lapply(comp, \(i){
   lapply(i, \(j) {
-    nrow(j)
+    if ("data.frame" %in% class(j)) {
+    j <- j |> filter(GROUP %notin% c("POOLED", "COMPOSITE", 
+                                     "TABLE AVERAGE"))
+    return(nrow(j))      
+    } else {
+      return(NA)
+    }
   })
-}) |> unlist() |> sum()
+}) |> unlist() |> sum(na.rm = TRUE)
 ```
 
-The analyses compare a total of `r .n_estimates*2 |> as.integer()` estimates: corresponding to `r .n_estimates` punctual estimations with their corresponding standard error.  
+The analyses compare a total of `r .n_estimates*2 |> as.integer()` estimates: corresponding to `r .n_estimates` punctual estimations with their corresponding standard error. Please note that we removed table averages from the comparison, to remove duplicated errors.[^1]
+
+[^1]: For example, in TIMSS-8 2023, IDB SPSS does not estimate standard error for Chinese Taipei, while `ILSAstats` does (by version 0.4.5). This affects the table average estimation, since they are including a different set of countries.
 
 ```{r}
 #| label: tbl-summary
-#| caption: Summary of equal decimals.
+#| tbl-cap: Summary of results per study and statistic.
 
-.ndecimals <- 4
-.nudif <- (1 / 10 ^ .ndecimals) |> formatC(format = "f", digits = 4)
-
-lapply(comp, \(i) lapply(i, \(j) {
+tab <- lapply(comp, \(i) lapply(i, \(j) {
   # pending here to add the differences  
-  
-  if(!is.null(j)) data.frame(Study = unique(j$STUDY),
-               Year = unique(j$YEAR),
-               Population = unique(j$POPULATION),
-               Statistic = unique(j$STATISTIC)
-    )
-} )) |> bind_rows()
 
+  if ("data.frame" %in% class(j)) {
+      # Remove accidental pooled analyses, and table averages
+      j <- j |> filter(GROUP %notin% c("POOLED", "COMPOSITE", 
+                                     "TABLE AVERAGE"))
+      
+      # Identify the columns
+      .dif_cols <- grepv("_DIF", names(j))
+      .dif_cols_se <- grepv("SE_DIF", names(j))
+      .dif_cols_est <- setdiff(.dif_cols, .dif_cols_se)
+      
+      if (length(.dif_cols_est) != 1) {
+        message(.dif_cols_est)
+        message(j$STUDY |> unique(), 
+                j$YEAR |> unique(), 
+                j$STATISTIC |> unique())
+        stop("More than one estimation column")
+      }
+      
+      # Estimate if the numbers differ or not
+      .number_est <- length(j[[.dif_cols_est]]) + 
+        length(j[[.dif_cols_se]])
+      
+      .est_diff_est <- ifelse(abs(j[[.dif_cols_est]]) > (1/10^.ndecimals),
+                                1,
+                                0)
+      .est_diff_se <- if_else(abs(j[[.dif_cols_se]]) > (1/10^.ndecimals),
+                               1,
+                               0)
+      
+      # Average difference
+      .sum_est <- j |> 
+        mutate(diff_est = .est_diff_est) |> 
+        filter(diff_est == 1) |> 
+        summarize(avg = mean(abs(.data[[.dif_cols_est]]), na.rm = TRUE)) |> 
+        mutate(avg = ifelse(is.na(avg),
+                            "",
+                            formatC(avg, format = "f", digits = 4))) |> 
+        pull(avg)
+      
+        .sum_se <- j |> 
+        mutate(diff_est = .est_diff_se) |> 
+        filter(diff_est == 1) |> 
+        summarize(avg = mean(abs(.data[[.dif_cols_se]]), na.rm = TRUE)) |> 
+        mutate(avg = ifelse(is.na(avg),
+                            "",
+                            formatC(avg, format = "f", digits = 4))) |> 
+        pull(avg)
+      
+      # Mark those where SPSS is missing and R is not, or viceversa
+      .dif_cols_est_R <- gsub("_DIF", "_R", .dif_cols_est)
+      .dif_cols_est_SPSS <- gsub("_DIF", "_SPSS", .dif_cols_est)
+      .est_diff_est <- ifelse(
+        (is.na(j[[.dif_cols_est_R]]) & !is.na(j[[.dif_cols_est_SPSS]])) |
+          (!is.na(j[[.dif_cols_est_R]]) & is.na(j[[.dif_cols_est_SPSS]])),
+        1,
+        .est_diff_est
+        )
+
+      .dif_cols_se_R <- gsub("_DIF", "_R", .dif_cols_se)
+      .dif_cols_se_SPSS <- gsub("_DIF", "_SPSS", .dif_cols_se)
+      .est_diff_se <- ifelse(
+        (is.na(j[[.dif_cols_se_R]]) & !is.na(j[[.dif_cols_se_SPSS]])) |
+          (!is.na(j[[.dif_cols_se_R]]) & is.na(j[[.dif_cols_se_SPSS]])),
+        1,
+        .est_diff_se
+        )
+
+
+        
+        
+      # Summary
+      .indic_est <- ifelse(sum(.est_diff_est, na.rm = TRUE) > 0,
+                           paste0("❌ (",  
+                                  sum(.est_diff_est, na.rm = TRUE), 
+                                  ")"),
+                           "✔️")
+      
+      .indic_se <- ifelse(sum(.est_diff_se, na.rm = TRUE) > 0,
+                           paste0("❌ (",  
+                                  sum(.est_diff_se, na.rm = TRUE), 
+                                  ")"),
+                           "✔️")
+    
+      .study <- unique(j$STUDY)
+      .study2 <- ifelse(.study == "TIMSS",
+                        paste0(.study, "-", unique(j$POPULATION)),
+                        .study)
+      
+    return(
+      tibble(Study = .study2,
+               Year = unique(j$YEAR),
+               Statistic = unique(j$STATISTIC),
+               'N.\nest.' = .number_est,
+               'Diff.\nPoint\nEst.' = .indic_est,
+                          'Avg.\nDiff.\nEst.' = .sum_est,
+               'Diff.\nS.E.' = .indic_se,
+             'Avg.\nDiff.\nS.E.' = .sum_se
+    )
+    )
+  } else {
+    return(NULL)
+  }
+} )
+) |> bind_rows()
+
+tt(tab, height = .8) |> 
+  style_tt(fontsize = .8, align = "c") |> 
+  format_tt(markdown = TRUE)
 ```
+
+In @tbl-summary is listed per study, and per statistic, how many estimations were estimated, and a summary for point estimates and a summary for standard errors. If no differences bigger than an absolute value of `{r} .nudif` are found, then a check (✔️) is marked. If some differences are found, then a cross (❌) is marked  with an indication of how many estimations were not close enough.
+
+## Remaining issues
+
+```{r}
+average_differences <- function(x, statistic){
+  
+}
+```
+
+### Spearman correlation
+
+We find differences in many estimates, although these differences remain mostly in the fourth decimal (except for ICILS 2018 estimations). A further work is needed to understand the reason behind these differences. 
+
+### Percentiles
+
+Three point estimates present differences. The bug has been identified and will be fixed in future updates of `ILSAstats`. These three estimates corresponded to groups of 1 respondent (gender = "Other"), that should have `NA` standard error.
+
+### OLS
+
+Further work is needed to determine the differences between the `ILSAstats`OLS results and IDB Analyzer in SPSS. 

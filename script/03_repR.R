@@ -121,6 +121,7 @@ for (i in 61:62) { #     1:length(cdbk)) {
     results[[i]] <- repprop.table(res, type = "long") |>
       select(group, prop, se, category) |> 
       rename(pct = prop, pct_se = se, cutvar = category) |>
+      filter(group %notin% "POOLED") |> 
       mutate(study = params$STUDY,
              year = params$YEAR,
              population = params$POPULATION,
