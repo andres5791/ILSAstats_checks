@@ -19,7 +19,7 @@ cnt.tostring <- function(x){
 }
 
 # Start loop to store results -----
-#results <- as.list(1:length(cdbk))
+results <- as.list(1:length(cdbk))
 
 # Start to store the times
 cdbk_2 <- lapply(cdbk, function(x){
@@ -35,7 +35,7 @@ times <- bind_rows(cdbk_2) %>%
 
 # Load data and prepare ----------------
 tic("Total time")
-for (i in 61:62) { #     1:length(cdbk)) {
+for (i in 1:length(cdbk)) {
   tic()
   params <- cdbk[[i]]
   
@@ -465,8 +465,6 @@ for (i in 61:62) { #     1:length(cdbk)) {
 
   # OLS ------------------------
   if (stats %in% "OLS") {
-    
-    dat <- ILSAstats:::untidy(dat)
     
     # Continuous variables
     convars <- strsplit(params$convar, " ")[[1]]
