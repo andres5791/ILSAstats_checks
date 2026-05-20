@@ -5,6 +5,7 @@ date: today
 format: 
   html:
     toc: true
+    embed-resources: true
   docx:
     toc: true
 echo: false
@@ -90,6 +91,8 @@ The results are pooled by statistic type. Each row corresponds to one estimation
 
 library(tinytable)
 library(dplyr)
+library(openxlsx)
+library(flextable)
 library(here, quietly = TRUE)
 
 comp <- readRDS(here("outputR/res_comp_bystatistic.Rds"))
@@ -118,6 +121,8 @@ The analyses compare a total of `r .n_estimates*2 |> as.integer()` estimates: co
 ```{r}
 #| label: tbl-summary
 #| tbl-cap: Summary of results per study and statistic.
+#| results: asis
+
 
 tab <- lapply(comp, \(i) lapply(i, \(j) {
   # pending here to add the differences  
@@ -194,16 +199,16 @@ tab <- lapply(comp, \(i) lapply(i, \(j) {
         
       # Summary
       .indic_est <- ifelse(sum(.est_diff_est, na.rm = TRUE) > 0,
-                           paste0("❌ (",  
+                           paste0("✗ (",  
                                   sum(.est_diff_est, na.rm = TRUE), 
                                   ")"),
-                           "✔️")
+                           "✓")
       
       .indic_se <- ifelse(sum(.est_diff_se, na.rm = TRUE) > 0,
-                           paste0("❌ (",  
+                           paste0("✗ (",  
                                   sum(.est_diff_se, na.rm = TRUE), 
                                   ")"),
-                           "✔️")
+                           "✓")
     
       .study <- unique(j$STUDY)
       .study2 <- ifelse(.study == "TIMSS",
@@ -227,12 +232,21 @@ tab <- lapply(comp, \(i) lapply(i, \(j) {
 } )
 ) |> bind_rows()
 
-tt(tab, height = .8) |> 
-  style_tt(fontsize = .8, align = "c") |> 
-  format_tt(markdown = TRUE)
+tab |> openxlsx::write.xlsx(here("reporting/table_summary.xlsx"))
+
+if (knitr::pandoc_to("docx")) {
+  flextable::flextable(tab) |>
+    flextable::set_caption("Summary of results per study and statistic.") |>
+    flextable::autofit()
+}  else {
+  tt(tab, height = .8) |> 
+  style_tt(fontsize = .8, align = "c")
+}
+
+
 ```
 
-In @tbl-summary is listed per study, and per statistic, how many estimations were estimated, and a summary for point estimates and a summary for standard errors. If no differences bigger than an absolute value of `{r} .nudif` are found, then a check (✔️) is marked. If some differences are found, then a cross (❌) is marked  with an indication of how many estimations were not close enough.
+In @tbl-summary is listed per study, and per statistic, how many estimations were estimated, and a summary for point estimates and a summary for standard errors. If no differences bigger than an absolute value of `{r} .nudif` are found, then a check (✓️) is marked. If some differences are found, then a cross (✗) is marked  with an indication of how many estimations were not close enough.
 
 ## Remaining issues
 
